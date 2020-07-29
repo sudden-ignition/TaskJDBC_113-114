@@ -15,8 +15,6 @@ public class UserServiceImpl implements UserService {
         new UserDaoJDBCImpl().createUsersTable();
     }
 
-
-
     public void dropUsersTable() {
         new UserDaoJDBCImpl().dropUsersTable();
     }
@@ -34,6 +32,6 @@ public class UserServiceImpl implements UserService {
     }
 
     public void cleanUsersTable() {
-        new UserDaoJDBCImpl().getAllUsers();
+        new UserDaoJDBCImpl().cleanUsersTable();
     }
 }

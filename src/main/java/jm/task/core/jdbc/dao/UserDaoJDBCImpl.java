@@ -12,102 +12,75 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void createUsersTable() {
-        String SQL_CREATE = "CREATE TABLE USER NULLIF"
-                + "("
-                + " PRIMARY KEY (id) "
-                + " name VARCHAR(45) NOT NULL, "
-                + " lastName VARCHAR(45), "
-                + " age VARCHAR (3) NOT NULL, "
-                + ")";
-        /*try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }*/
-
+        String SQL_CREATE = "CREATE TABLE IF NOT EXISTS USERS (" +
+                "id INT(10) NOT NULL AUTO_INCREMENT," +
+                "name VARCHAR(45) NOT NULL," +
+                "lastName VARCHAR(45) NOT NULL," +
+                "age INT (3) NOT NULL, PRIMARY KEY (id))";
         try (PreparedStatement prepStat = Util.getConnect().prepareStatement(SQL_CREATE)) {
-            prepStat.execute();
+            prepStat.executeUpdate();
         } catch (SQLException e) {
             System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Non-SQL exception on CREATE method" + e.getMessage());
         }
     }
 
     public void dropUsersTable() {
-
-        String SQL_DROP = "DROP TABLE IF EXISTS USER";
-        try (Connection dbConnection = Util.getConnect();
-            PreparedStatement prepStat = dbConnection.prepareStatement(SQL_DROP)) {
-            prepStat.execute();
+        String SQL_DROP = "DROP TABLE IF EXISTS USERS";
+        try (PreparedStatement prepStat = Util.getConnect().prepareStatement(SQL_DROP)) {
+            prepStat.executeUpdate();
         } catch (SQLException e) {
             System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Non-SQL exception on DROP_TABLE method" + e.getMessage());
         }
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        String SQL_INSERT = "INSERT INTO USER (1, 2, 3) VALUES (?,?,?)";
-        try (Connection dbConnection = Util.getConnect();
-            PreparedStatement prepStat = dbConnection.prepareStatement(SQL_INSERT)) {
+        String SQL_INSERT = "INSERT INTO USERS (name, lastName, age) VALUES (?, ?, ?)";
+        try (PreparedStatement prepStat = Util.getConnect().prepareStatement(SQL_INSERT)) {
             prepStat.setString(1, name);
             prepStat.setString(2, lastName);
             prepStat.setByte(3, age);
             prepStat.executeUpdate();
         } catch (SQLException e) {
             System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Non-SQL exception on SAVE_USER method" + e.getMessage());
         }
     }
 
-    public void removeUserById(long thisId) {
-        String SQL_DELETE = "DELETE FROM USER WHERE id=thisId";
-        try (Connection dbConnection = Util.getConnect();
-            PreparedStatement prepStat = dbConnection.prepareStatement(SQL_DELETE)) {
+    public void removeUserById(long id) {
+        String SQL_DELETE = "DELETE FROM USERS WHERE id=id";
+        try (PreparedStatement prepStat = Util.getConnect().prepareStatement(SQL_DELETE)) {
             prepStat.executeUpdate();
         } catch (SQLException e) {
             System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Non-SQL exception on REMOVE_USER method" + e.getMessage());
         }
     }
 
     public List<User> getAllUsers() {
-        List<User> summary = new ArrayList<>();
-        String SQL_SELECT = "Select * from USER";
-        try (Connection dbConnection = Util.getConnect();
-            PreparedStatement prepStat = dbConnection.prepareStatement(SQL_SELECT)) {
+        List<User> summList = new ArrayList<>();
+        String SQL_SELECT = "SELECT * FROM USERS";
+        try (PreparedStatement prepStat = Util.getConnect().prepareStatement(SQL_SELECT)) {
             ResultSet rs = prepStat.executeQuery();
-            while (rs.next()) {
+                while (rs.next()) {
                 User objUser = new User();
                 objUser.setId(rs.getLong("id"));
                 objUser.setName(rs.getString("name"));
                 objUser.setLastName(rs.getString("lastName"));
                 objUser.setAge(rs.getByte("age"));
-                summary.add(objUser);
-            }
-            for (User u: summary) {
-                System.out.println(u);
+                summList.add(objUser);
             }
         } catch (SQLException e) {
             System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Non-SQL exception on GET_ALL_USER method" + e.getMessage());
         }
-        return summary;
+        return summList;
     }
 
     public void cleanUsersTable() {
-        String SQL_TRUNCATE = "TRUNCATE TABLE USER";
-        try (Connection dbConnection = Util.getConnect();
-            PreparedStatement prepStat = dbConnection.prepareStatement(SQL_TRUNCATE)) {
+        dropUsersTable();
+        createUsersTable();
+/*        String SQL_TRUNCATE = "TRUNCATE TABLE USERS";
+        try (PreparedStatement prepStat = Util.getConnect().prepareStatement(SQL_TRUNCATE)) {
             prepStat.executeUpdate();
         } catch (SQLException e) {
             System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Non-SQL exception on CLEAN_USER method" + e.getMessage());
-        }
+        }*/
     }
 }
