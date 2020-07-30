@@ -47,7 +47,6 @@ public class UserDaoHibernateImpl implements UserDao {
         User user = new User(name, lastName, age);
         session.save(user);
         transaction.commit();
-        System.out.println("++++++++++++++++++ SAVE +++++++++++++++++++++++++++");
         session.close();
         //rollback ????
     }
@@ -59,8 +58,6 @@ public class UserDaoHibernateImpl implements UserDao {
         User user = session.load(User.class, id);
         session.delete(user);
         transaction.commit();
-        System.out.println("++++++++++++++++++ REMOVE +++++++++++++++++++++++++++");
-        //session.flush();
         session.close();
     }
 
@@ -87,14 +84,5 @@ public class UserDaoHibernateImpl implements UserDao {
         query.executeUpdate();
         transaction.commit();
         session.close();
-/*        List<User> listToClean = getAllUsers();
-        Session session = Util.getSessionFactory().openSession();
-        Transaction transaction = session.beginTransaction();
-        for (User u: listToClean) {
-            System.out.println(u);
-            session.delete(u);
-        }
-        transaction.commit();
-        session.close();*/
     }
 }
