@@ -63,7 +63,6 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-
             Session session = Util.getSessionFactory().openSession();
             Transaction transaction = session.beginTransaction();
             List<User> userList = session.createQuery("SELECT a FROM User a", User.class).getResultList();
@@ -71,8 +70,6 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction.commit();
             session.close();
             return userList;
-
-
     }
 
     @Override

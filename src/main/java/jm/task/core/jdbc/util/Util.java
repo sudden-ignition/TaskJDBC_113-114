@@ -32,10 +32,6 @@ public static SessionFactory getSessionFactory() {
             ServiceRegistry sr = new StandardServiceRegistryBuilder().applySettings(conf.getProperties()).build();
             sessionFactory = conf.buildSessionFactory(sr);
 
-            System.out.println("+++++++++++++++++++++++++++++++++");
-            System.out.println("Session is created!");
-            System.out.println("+++++++++++++++++++++++++++++++++");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
