@@ -25,6 +25,7 @@ public class Main {
         for (User u: toPrint) {
             System.out.println(u.toString());
         }
+        System.out.println(toPrint.size());
         usi.cleanUsersTable();
         usi.dropUsersTable();
     }

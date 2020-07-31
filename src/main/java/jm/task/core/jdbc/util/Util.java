@@ -22,7 +22,7 @@ public static SessionFactory getSessionFactory() {
             properties.put(Environment.USER, "root");
             properties.put(Environment.PASS, "J-Mentor-root-91");
             properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
-            properties.put(Environment.HBM2DDL_AUTO, "create");//update - ???
+            properties.put(Environment.HBM2DDL_AUTO, "update");//update - ???
             properties.put(Environment.SHOW_SQL, "false"); //hibernate's "red" messages
             properties.put(Environment.FORMAT_SQL, "false");
             //properties.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");//???

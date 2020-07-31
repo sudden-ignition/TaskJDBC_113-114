@@ -15,12 +15,26 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void createUsersTable() {
-
+        String SQL_CREATE = "CREATE TABLE IF NOT EXISTS USERS (id INT(10) NOT NULL AUTO_INCREMENT," +
+                "name VARCHAR(45) NOT NULL, lastName VARCHAR(45) NOT NULL," +
+                "age INT (3) NOT NULL, PRIMARY KEY (id))";
+        Session session = Util.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createSQLQuery(SQL_CREATE);
+        query.executeUpdate();
+        transaction.commit();
+        session.close();
     }
 
     @Override
     public void dropUsersTable() {
-
+        String SQL_DROP = "drop table if exists users";
+        Session session = Util.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createSQLQuery(SQL_DROP);
+        query.executeUpdate();
+        transaction.commit();
+        session.close();
     }
 
     @Override
@@ -45,12 +59,12 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-            Session session = Util.getSessionFactory().openSession();
-            Transaction transaction = session.beginTransaction();
-            List<User> userList = session.createQuery("SELECT a FROM User a", User.class).getResultList();
-            transaction.commit();
-            session.close();
-            return userList;
+        Session session = Util.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        List <User>userList = (List<User>) session.createQuery("FROM User").list();
+        transaction.commit();
+        session.close();
+        return userList;
     }
 
     @Override
